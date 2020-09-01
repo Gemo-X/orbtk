@@ -1,5 +1,5 @@
 [package]
-name = "orbtk-utils"
+name = "orbtk_utils"
 version = "0.3.1-alpha4"
 authors = ["Florian Blasius <flovanpt@posteo.de>"]
 description = "Helper utils and traits for OrbTk."
@@ -13,3 +13,8 @@ edition = "2018"
 ron = "0.6"
 serde = "1.0"
 derive_more = { version = "0.99", default-features = false, features = ["add", "constructor", "from"] }
+lexical-core = "0.7"
+phf = { version = "0.8", default-features = false }
+
+[build-dependencies]
+phf_codegen = { version = "0.8", default-features = false }

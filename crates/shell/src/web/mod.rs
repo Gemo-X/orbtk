@@ -95,6 +95,7 @@ where
                 if let Some(window_shell) = self.window_shells.get_mut(i) {
                     window_shell.render();
                     window_shell.update();
+                    window_shell.update_clipboard();
                     window_shell.drain_events();
                     window_shell.receive_requests();
                     if !window_shell.is_open() {
@@ -133,10 +134,10 @@ impl Console {
         // }
     }
 
-    pub fn log(&self, message: impl Into<String>) {
+    pub fn log(&self, _message: impl Into<String>) {
         #[cfg(feature = "log")]
         js! {
-            console.log(@{&message.into()});
+            console.log(@{&_message.into()});
         }
     }
 }

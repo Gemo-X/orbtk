@@ -9,7 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 0.3.1-alpha4 (wip)
 
 * PasswordBox widget
+* Clipboard service
+* Text input copy and paste
+* orbraq backend (Orbclient and raqote)
 * Refactor on_changed callback, add key parameter
+* Access RawWindowHandle from Context
+* Select colors in themes through of CSS-like functions
+* Create `Color` from HSV and HSL values
+* Create a `Color` by its CSS name
+* Gradient coordinates become relative to the path
 
 ### 0.3.1-alpha3
 
@@ -56,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * api crate: base api elements of OrbTk e.g. widget and application parts
 * css-engine crate: parse and read values from a css file
-* proc-macros crate: procedural helper macros
+* proc_macros crate: procedural helper macros
 * render crate: cross platform 2D/3D render library
 * shell crate: cross platform window and event handling
 * theme crate: OrbTks default theme (light and dark)

@@ -2,6 +2,8 @@ use std::{collections::BTreeMap, sync::mpsc};
 
 use dces::prelude::*;
 
+use raw_window_handle::RawWindowHandle;
+
 use crate::{
     application::{create_window, ContextProvider},
     prelude::*,
@@ -55,6 +57,15 @@ impl<'a> Context<'a> {
         }
     }
 
+    /// Access the raw window handle. Could be `None` on unsupported raw-window-handle platforms like `Redox`.
+    pub fn raw_window_handle(&self) -> Option<RawWindowHandle> {
+        if let Some(handle) = self.provider.raw_window_handle {
+            return Some(handle);
+        }
+
+        None
+    }
+
     // -- Widgets --
 
     /// Returns a specific widget.
@@ -81,9 +92,16 @@ impl<'a> Context<'a> {
     /// Returns a child of the widget of the current state referenced by css `id`.
     /// If there is no id defined, it will panic.
     pub fn child<'b>(&mut self, id: impl Into<&'b str>) -> WidgetContainer<'_> {
-        self.entity_of_child(id)
-            .map(move |child| self.get_widget(child))
-            .unwrap()
+        let id = id.into();
+        let result = self
+            .entity_of_child(id)
+            .map(move |child| self.get_widget(child));
+
+        if result.is_none() {
+            panic!("Context::child: Could not find child with id: {}.", id);
+        }
+
+        result.unwrap()
     }
 
     /// Returns a child of the widget of the current state referenced by css `id`.

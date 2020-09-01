@@ -192,6 +192,18 @@ impl<'a> WidgetContainer<'a> {
         None
     }
 
+    fn toggle_enabled_state(&mut self) {
+        if *self.get::<bool>("enabled") && self.get::<Selector>("selector").has_state("disabled") {
+            self.get_mut::<Selector>("selector").clear_state();
+            self.update(false);
+        } else if !*self.get::<bool>("enabled")
+            && !self.get::<Selector>("selector").has_state("disabled")
+        {
+            self.get_mut::<Selector>("selector").set_state("disabled");
+            self.update(false);
+        }
+    }
+
     /// Sets the property of type `P`. Sets the `dirty` flag of the widget to `true`.
     ///
     /// # Panics
@@ -210,6 +222,7 @@ impl<'a> WidgetContainer<'a> {
         {
             return;
         }
+
         self.mark_as_dirty(key);
 
         let mut on_changed = false;
@@ -242,6 +255,10 @@ impl<'a> WidgetContainer<'a> {
         }
 
         self.set_non_dirty(key, value);
+
+        if key.eq("enabled") {
+            self.toggle_enabled_state();
+        }
     }
 
     /// Sets the property of type `P` without setting the widget dirty.
@@ -415,7 +432,7 @@ impl<'a> WidgetContainer<'a> {
                     "padding_left" | "padding_top" | "padding_right" | "padding_bottom" => {
                         self.update_padding(key, Value(value.clone()));
                     }
-                    "font_family" | "icon_family" => {
+                    "font" | "icon_font" => {
                         self.update_value::<String, Value>(key, Value(value.clone()));
                     }
                     "opacity" => {
